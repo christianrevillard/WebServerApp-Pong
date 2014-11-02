@@ -34,8 +34,28 @@ var CollisionTest = function(collision, socket){
 	(
 		["name", "round1"],
 		["image", { "width":200,"height":200, "typeName": 'round'}],
-		["position", {"x": 100, "y": 250}],			
-		["solid", {}],
+		["position", {"x": 50, "y": 250}],			
+		["solid", {mass:Infinity}],
+		["clickable", {}],
+		["moving", {vx:0}]
+	);
+
+	this.controller.addElement
+	(
+		["name", "round1"],
+		["image", { "width":200,"height":200, "typeName": 'round'}],
+		["position", {"x": 650, "y": 250}],			
+		["solid", {mass:Infinity}],
+		["clickable", {}],
+		["moving", {vx:0}]
+	);
+	
+	this.controller.addElement
+	(
+		["name", "round1"],
+		["image", { "width":200,"height":200, "typeName": 'round'}],
+		["position", {"x": 200, "y": 250}],			
+		["solid", {mass:1}],
 		["clickable", {}],
 		["moving", {vx:0}]
 	);
@@ -44,8 +64,8 @@ var CollisionTest = function(collision, socket){
 	(
 		["name", "round2"],
 		["image", { "width":200,"height":200, "typeName": 'round'}],
-		["position", {"x": 600, "y": 250}],			
-		["solid", {}],
+		["position", {"x": 500, "y": 250}],			
+		["solid", {mass:1}],
 		["moving", {vx:-100}]
 	);
 	
