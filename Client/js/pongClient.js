@@ -1,11 +1,11 @@
-var CreCollision = CreCollision || {};
+var CrePong = CrePong || {};
 
-CreCollision.onload = function ()
+CrePong.onload = function ()
 {		
 	var socket = 
 		window.location.href.indexOf('rhcloud.com')>-1?
-	    io("http://nodejs-creweb.rhcloud.com:8000/collision"):
-		io("/collision");
+	    io("http://nodejs-creweb.rhcloud.com:8000/pong"):
+		io("/pong");
 
 	var theCanvas = document.getElementById('theCanvas');
 
@@ -68,6 +68,16 @@ CreCollision.onload = function ()
 			},
 			{width:150, height:50, edgeResolution:5}		
 		);
+
+	controller.addElementType(
+			"player",
+			function (context) {
+				context.fillStyle = "#F00";
+				context.fillRect(-10, -100, 20, 200);
+			},
+			{width:20, height:200, edgeResolution:5}		
+		);
+
 	
 	controller.emitToServer('clientReady');
 };

@@ -5,16 +5,16 @@ var games = [];
 // called only for the first of all users
 var startApplication = function(socketName) {
 
-	var collision = exports.applicationSocket = socketName;
+	var pong = exports.applicationSocket = socketName;
 
-	console.log('Setting up collision socket ');
+	console.log('Setting up pong socket ');
 	
-	collision.on('connection', function(socket){
+	pong.on('connection', function(socket){
 		
 		console.log('user connected: ' + socket.id);
 
 		// single user room stuff 
-		var theStuff = new CollisionTest(collision, socket)
+		var theStuff = new CollisionTest(pong, socket)
 
 		socket.on('disconnect', function(){
 			theStuff.disconnect();
@@ -39,7 +39,7 @@ var CollisionTest = function(collision, socket){
 		["name", "left"],
 		["image", { "width":20,"height":500, "typeName": 'wall'}],
 		["position", {"x": 10, "y": 250}],			
-		["solid", {mass:Infinity}],
+		["solid", {mass:Infinity, collisionCoefficient:1}],
 		["clickable", {}]
 	);
 
@@ -48,7 +48,7 @@ var CollisionTest = function(collision, socket){
 		["name", "right"],
 		["image", { "width":20,"height":500, "typeName": 'wall'}],
 		["position", {"x": 690, "y": 250}],			
-		["solid", {mass:Infinity}]
+		["solid", {mass:Infinity, collisionCoefficient:1}]
 	);
 
 	this.controller.addElement
@@ -68,13 +68,13 @@ var CollisionTest = function(collision, socket){
 	);
 		
 	
-	for (i=2;i<27;i++)
+	for (i=2;i<12;i++)
 	{
 		this.controller.addElement
 		(
 			["name", "round1"],
 			["image", { "width":20,"height":20, "typeName": 'round'}],
-			["position", {"x": 25*i, "y": 20}],			
+			["position", {"x": 50*i, "y": 20}],			
 			["solid", {mass:1}],
 			["clickable", {}],
 			["moving", {vy:100}]
@@ -84,20 +84,20 @@ var CollisionTest = function(collision, socket){
 		(
 			["name", "round1"],
 			["image", { "width":20,"height":20, "typeName": 'round'}],
-			["position", {"x": 25*i, "y": 470}],			
+			["position", {"x": 50*i, "y": 470}],			
 			["solid", {mass:1}],
 			["clickable", {}],
 			["moving", {vy:-100}]
 		);
 	}
 
-	for (i=4;i<25;i++)
+	for (i=4;i<12;i++)
 	{
 		this.controller.addElement
 		(
 			["name", "round1"],
 			["image", { "width":20,"height":20, "typeName": 'round'}],
-			["position", {"x": 25*i+10, "y": 100}],			
+			["position", {"x": 50*i+10, "y": 100}],			
 			["solid", {mass:1}],
 			["clickable", {}],
 			["moving", {vy:150}]
@@ -107,7 +107,7 @@ var CollisionTest = function(collision, socket){
 		(
 			["name", "round1"],
 			["image", { "width":20,"height":20, "typeName": 'round'}],
-			["position", {"x": 25*i+10, "y": 350}],			
+			["position", {"x": 50*i+10, "y": 350}],			
 			["solid", {mass:1}],
 			["clickable", {}],
 			["moving", {vy:-150}]
@@ -137,16 +137,21 @@ var CollisionTest = function(collision, socket){
 		);
 	}
 
-	/*
 	this.controller.addElement
 	(
-		["name", "round4"],
-		["image", { "width":150,"height":50, "typeName": 'redRound'}],
-		["position", {"x": 350, "y": 400}],			
-		["solid", {mass:5}],
-		["clickable", {}],
-		["moving", {vx:50,vy:50}]
-	);*/
+		["name", "player1"],
+		["image", { "width":20,"height":200, "typeName": 'player'}],
+		["position", {"x": 640, "y": 250}],			
+		["solid", {mass:Infinity, collisionCoefficient:1}],
+		["movable", {}],
+		["moving", {}],
+		["customTimer", {time:50, action:
+			function(){
+			this.movingSpeed = this.movingSpeed || {x:0,y:0};
+			this.movingSpeed.x = 640 - this.elementX ;
+		}}]
+	);
+	
 	
 	this.disconnect = function()
 	{
