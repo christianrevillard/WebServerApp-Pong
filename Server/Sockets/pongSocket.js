@@ -66,76 +66,52 @@ var CollisionTest = function(collision, socket){
 		["position", {"x": 350, "y": 490}],			
 		["solid", {mass:Infinity}]
 	);
-		
-	
-	for (i=2;i<12;i++)
-	{
-		this.controller.addElement
-		(
-			["name", "round1"],
-			["image", { "width":20,"height":20, "typeName": 'round'}],
-			["position", {"x": 50*i, "y": 20}],			
-			["solid", {mass:1}],
-			["clickable", {}],
-			["moving", {vy:100}]
-		);
-		
-		this.controller.addElement
-		(
-			["name", "round1"],
-			["image", { "width":20,"height":20, "typeName": 'round'}],
-			["position", {"x": 50*i, "y": 470}],			
-			["solid", {mass:1}],
-			["clickable", {}],
-			["moving", {vy:-100}]
-		);
-	}
+			
+	this.controller.addElement
+	(
+		["name", "round1"],
+		["image", { 
+			"width":30,
+			"height":30, 
+			"typeName": 'round',
+			"isPointInElementEdges": function(x,y){
+					return this.getDistance(x,y)<15;
+			},
+			"getEdges": function(){
+					if (this.customEdges)
+						return this.customEdges;
+					
+					console.log('build edges');
+					
+					this.customEdges = [];
+					for (var j=0; j<100; j++)
+					{
+						var i=j/100*2*Math.PI;
+						this.customEdges.push({x:15*Math.sin(i) ,y:15*Math.cos(i)});
+					}
 
-	for (i=4;i<12;i++)
-	{
-		this.controller.addElement
-		(
-			["name", "round1"],
-			["image", { "width":20,"height":20, "typeName": 'round'}],
-			["position", {"x": 50*i+10, "y": 100}],			
-			["solid", {mass:1}],
-			["clickable", {}],
-			["moving", {vy:150}]
-		);
-		
-		this.controller.addElement
-		(
-			["name", "round1"],
-			["image", { "width":20,"height":20, "typeName": 'round'}],
-			["position", {"x": 50*i+10, "y": 350}],			
-			["solid", {mass:1}],
-			["clickable", {}],
-			["moving", {vy:-150}]
-		);
-	}
+					return this.edges = this.customEdges 
+			},
 
-	for (i=2;i<20;i++)
-	{
-		this.controller.addElement
-		(
-			["name", "round1"],
-			["image", { "width":20,"height":20, "typeName": 'round'}],
-			["position", {"x": 20, "y": 25*i}],			
-			["solid", {mass:1}],
-			["clickable", {}],
-			["moving", {vx:100}]
-		);
+		//<0 inside, >0 outside
+			"experimentalIsPointInElement": function(x,y){
+				// must use ElementCoordinates
+				return this.getDistance(x,y) - 15;
+			},
+		// [0..1] parametric definition of edges
+			// returned as ElementCoordinates
 
-		this.controller.addElement
-		(
-			["name", "round1"],
-			["image", { "width":20,"height":20, "typeName": 'round'}],
-			["position", {"x": 680, "y": 25*i}],			
-			["solid", {mass:1}],
-			["clickable", {}],
-			["moving", {vx:-100}]
-		);
-	}
+			"experimentalGetEdgePoint": function(t){
+				return {
+					x:15*Math.sin(t*2*Math.PI),
+					y:15*Math.cos(t*2*Math.PI)};
+			}
+		}],
+		["position", {"x": 350, "y": 250}],			
+		["solid", {mass:1}],
+		["clickable", {}],
+		["moving", {vy:100,vx:100}]
+	);
 
 	this.controller.addElement
 	(
@@ -143,13 +119,8 @@ var CollisionTest = function(collision, socket){
 		["image", { "width":20,"height":200, "typeName": 'player'}],
 		["position", {"x": 640, "y": 250}],			
 		["solid", {mass:Infinity, collisionCoefficient:1}],
-		["movable", {}],
-		["moving", {}],
-		["customTimer", {time:50, action:
-			function(){
-			this.movingSpeed = this.movingSpeed || {x:0,y:0};
-			this.movingSpeed.x = 640 - this.elementX ;
-		}}]
+		["movable", {alwaysMoving:true}],
+		["moving", {xMin:500, xMax:640, alwaysMoving:true, vMax:300}]		
 	);
 	
 	
