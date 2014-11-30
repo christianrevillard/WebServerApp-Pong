@@ -113,9 +113,10 @@ var CollisionTest = function(collision, socket){
 		typeName: 'player',
 		box: {width:20, height:200 },
 		position: {x: 640, y: 250},			
-		solid: {mass:Infinity, collisionCoefficient:1}
-		moving: {speed:{x:100,y:100}, alwaysMoving: true, movingLimits:{xMin:500, xMax:640, vMax:300}}
-	);
+		solid: {mass:Infinity, collisionCoefficient:1},
+		moving: {movingLimits:{xMin:500, xMax:640, vMax:300}},
+		movable : {alwaysMoving: true}
+	});
 
 	this.disconnect = function()
 	{
