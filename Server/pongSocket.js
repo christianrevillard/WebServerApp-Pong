@@ -14,106 +14,88 @@ var startApplication = function(socketName) {
 		console.log('user connected: ' + socket.id);
 
 		// single user room stuff 
-		var theStuff = new CollisionTest(pong, socket)
+		var pongApplication = new PongApplication(pong, socket)
 
 		socket.on('disconnect', function(){
-			theStuff.disconnect();
+			pongApplication.disconnect();
 			console.log('user disconnected');});
 		
 		socket.on('clientReady', function(){
-			theStuff.start();
+			pongApplication.start();
 		});
 
 	});
 };
 
-var CollisionTest = function(collision, socket){
+var PongApplication = function(collision, socket){
 	var game = this;
 	
 	// each user gets a new room
 	this.controller = new serverController.Controller(collision, socket.id, false)
 	this.controller.addSocket(socket);	
 
-	this.controller.addElement({
+	this.controller.addAxeAlignedBox({
 		name: 'left',
-		typeName: 'wall',
-		box: {width:20, height:500 },
-		position: {x: 10, y: 250},			
+		clientType: 'wall',
+		left:0,
+		right:20,
+		top:0,
+		bottom:500,
+		position: {x: 0, y: 0},			
 		solid: {mass:Infinity, collisionCoefficient:1}
 	});
 
-	this.controller.addElement({
+	this.controller.addAxeAlignedBox({
 		name: 'right',
-		typeName: 'wall',
-		box: {width:20, height:500 },
-		position: {x: 690, y: 250},			
-		solid: {mass:Infinity, collisionCoefficient:1}
-	});
-
-	this.controller.addElement({
-		name: 'top',
-		typeName: 'top',
-		box: {width:700, height:20 },
-		position: {x: 350, y: 10},			
+		clientType: 'wall',
+		left:0,
+		right:20,
+		top:0,
+		bottom:500,
+		position: {x: 680, y: 0},			
 		solid: {mass:Infinity}
 	});
 
-	this.controller.addElement({
+	this.controller.addAxeAlignedBox({
+		name: 'top',
+		clientType: 'top',
+		left:0,
+		right:700,
+		top:0,
+		bottom:20,
+		position: {x: 0, y: 0},			
+		solid: {mass:Infinity}
+	});
+
+	this.controller.addAxeAlignedBox({
 		name: 'bottom',
-		typeName: 'top',
-		box: {width:700, height:20 },
-		position: {x: 350, y: 490},			
+		clientType: 'top',
+		left:0,
+		right:700,
+		top:0,
+		bottom:20,
+		position: {x: 0, y: 480},			
 		solid: {mass:Infinity}
 	});
 			
-	this.controller.addElement({
+	this.controller.addCircle({
 		name: 'round1',
-		typeName: 'round',
-		box: {width:30, height:30 },
+		clientType: 'round',
+		radius: 15,
 		position: {x: 350, y: 250},			
 		solid: {mass:1},
-		moving: {speed:{x:100,y:100}},
-		"isPointInElementEdges": function(x,y){
-			return this.getDistance(x,y)<15;
-		},
-		"getEdges": function(){
-			if (this.customEdges)
-				return this.customEdges;
-			
-			console.log('build edges');
-			
-			this.customEdges = [];
-			for (var j=0; j<100; j++)
-			{
-				var i=j/100*2*Math.PI;
-				this.customEdges.push({x:15*Math.sin(i) ,y:15*Math.cos(i)});
-			}
-
-			return this.edges = this.customEdges 
-		},
-
-		//<0 inside, >0 outside
-		"experimentalIsPointInElement": function(x,y){
-			// must use ElementCoordinates
-			return this.getDistance(x,y) - 15;
-		},
-		// [0..1] parametric definition of edges
-		// returned as ElementCoordinates
-
-		"experimentalGetEdgePoint": function(t){
-			return {
-				x:15*Math.sin(t*2*Math.PI),
-				y:15*Math.cos(t*2*Math.PI)};
-		}
-
+		moving: {speed:{x:100,y:100}}
 	});
 
-	this.controller.addElement({
+	this.controller.addAxeAlignedBox({
 		name: 'player1',
-		typeName: 'player',
-		box: {width:20, height:200 },
+		clientType: 'player',
+		left:-5,
+		right:5,
+		top:-50,
+		bottom:50,
 		position: {x: 640, y: 250},			
-		solid: {mass:Infinity, collisionCoefficient:1},
+		solid: {mass:Infinity},			
 		moving: {movingLimits:{xMin:500, xMax:640, vMax:300}},
 		movable : {alwaysMoving: true}
 	});

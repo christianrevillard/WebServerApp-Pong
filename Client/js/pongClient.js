@@ -19,19 +19,15 @@ CrePong.onload = function ()
 		"wall",
 		function (context) {
 			context.fillStyle = "#000";
-			context.fillRect(-2,-250,4,500);
-		},
-		// toDO:edgeresolution according to width/height
-		{width:4, height:500, edgeResolution:5});		
+			context.fillRect(0,0,20,500);
+		});		
 
 	controller.addElementType(
 		"top",
 		function (context) {
 			context.fillStyle = "#000";
-			context.fillRect(-350,-2,700,4);
-		},
-		// toDO:edgeresolution according to width/height
-		{width:700, height:2, edgeResolution:5});		
+			context.fillRect(0,0,700,20);
+		});		
 
 	controller.addElementType(
 		"round",
@@ -46,18 +42,21 @@ CrePong.onload = function ()
 			gradient.addColorStop(1.0,color2);
 			context.fillStyle = gradient;
 			context.fill();
-		},
-		{width:30, height:30, edgeResolution:5}		
-	);
+			
+			context.moveTo(0, 15);
+			context.lineTo(0, 0);
+			context.lineTo(15, 0);
+			context.strokeStyle = "black";
+			context.lineWidth = 1;
+			context.stroke();
+		});
 		
 	controller.addElementType(
-			"player",
-			function (context) {
-				context.fillStyle = "#F00";
-				context.fillRect(-5, -50, 10, 100);
-			},
-			{width:10, height:100, edgeResolution:5}		
-		);
+		"player",
+		function (context) {
+			context.fillStyle = "#F00";
+			context.fillRect(-5, -50, 10, 100);
+		});
 
 	
 	controller.emitToServer('clientReady');
