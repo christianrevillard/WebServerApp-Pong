@@ -154,10 +154,10 @@ PongApplication.prototype.join = function(socket){
 		name: 'round1',
 		clientType: 'round',
 		radius: 15,
-		position: {x: 350, y: 250},			
+		position: {x: 600, y: 250},			
 		solid: {mass:1},
 		moving: {
-			speed:{x:200,y:200},
+			speed:{x:0,y:0},
 			movingLimits:{vxMax:500,vyMax:500,vxMin:100}}
 	});
 
