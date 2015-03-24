@@ -57,7 +57,15 @@ CrePong.onload = function ()
 			context.fillStyle = "#F00";
 			context.fillRect(-5, -50, 10, 100);
 		});
-
 	
-	controller.emitToServer('clientReady');
+	// fix Galaxy Chrome scrolling bug
+	document.addEventListener(
+		"touchmove", function touchHandlerDummy(e)
+		{
+		    e.preventDefault();
+		    return false;
+		},
+		false);	
+	
+	controller.emitToServer('joinGame','');
 };
