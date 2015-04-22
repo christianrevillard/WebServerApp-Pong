@@ -5,7 +5,7 @@ CrePong.onload = function ()
 	var socket = 
 		window.location.href.indexOf('rhcloud.com')>-1?
 	    io("http://nodejs-creweb.rhcloud.com:8000/pongOnline/pongSocket"):
-		io("/pongOnline/pongSocket");
+		io("/Pong/Server/pongSocket");
 
 	var theCanvas = document.getElementById('theCanvas');
 

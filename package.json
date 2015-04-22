@@ -1,0 +1,32 @@
+{
+  "name": "Pong",
+  "version": "0.0.0",
+  "description": "Pong standalone",
+  "keywords": [
+    "Pong",
+    "CreanvasNodeModule"
+  ],
+  "author": {
+    "name": "Christian Revillard",
+    "email": "christian.revillard@centraliens.net",
+    "url": "http://www.openshift.com/"
+  },
+  "homepage": "http://www.openshift.com/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/openshift/origin-server"
+  },
+  "engines": {
+    "node": ">= 0.6.0",
+    "npm": ">= 1.0.0"
+  },
+    "dependencies": {
+      "cre-nodejs-server": ">=0.0.0",
+      "creanvas": "0.0.0"
+    },
+
+  "devDependencies": {},
+  "bundleDependencies": [],
+  "private": true,
+  "main": "index.js"
+}

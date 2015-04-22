@@ -1,4 +1,4 @@
-var serverController = require('../../node_modules/creanvas/ServerController');
+var serverController = require('creanvas').controller;
 
 var games = [];
 
