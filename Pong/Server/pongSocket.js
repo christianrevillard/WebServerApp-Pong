@@ -1,49 +1,41 @@
 var serverController = require('creanvas').controller;
+var server= require('cre-nodejs-server');
 
 var games = [];
 
-// called only for the first of all users
-var startApplication = function(socketName) {
-
-	var pong = exports.applicationSocket = socketName;
-
-	console.log('Setting up pong socket ');
 	
-	pong.on('connection', function(socket){
-		
-		console.log('user connected: ' + socket.id);
-
-		socket.on('disconnect', function(){		
-			console.log('user disconnected');});
+var onConnection = function (socket) {
   
-
-		// todo, common game and join stuff, avoid duplicate
-		socket.on('joinGame', function() {
-			console.log('Joining...');
-			if (games.length == 0 || games[games.length-1].player2)
-			{			
-				console.log('Starting a game' );
-				games.push(new PongApplication(pong, socket, 'game' + games.length));
-			}
-			else
-			{			
-				console.log('Joining a game' );
-				games[games.length-1].join(socket);
-			}
-			
-			socket.on('disconnect', function(){
-				games[games.length-1].controller.applicationInstanceBroadcast(
-					socket, 'textMessage', {message:'He has left !'});
-			});
-		});
-	});
+  console.log('user connected: ' + socket.id);
+    
+  socket.on('disconnect', function () {
+    console.log('user disconnected');
+  });
+  
+  
+  // todo, common game and join stuff, avoid duplicate
+  socket.on('joinGame', function () {
+    console.log('Joining...');
+    if (games.length == 0 || games[games.length - 1].player2) {
+      console.log('Starting a game');
+      games.push(new PongApplication(socket, 'game' + games.length));
+    }
+    else {
+      console.log('Joining a game');
+      games[games.length - 1].join(socket);
+    }
+    
+    socket.on('disconnect', function () {
+      games[games.length - 1].controller.applicationInstanceBroadcast(
+        socket, 'textMessage', { message: 'He has left !' });
+    });
+  });
 };
 
-var PongApplication = function(pong, socket, gameName){
+var PongApplication = function(socket, gameName){
 	var game = this;
-	
-	this.controller = new serverController.Controller(
-			pong, gameName, true)
+  
+	this.controller = new serverController.Controller(server.socket(socket.nsp.name), gameName, true)
 	this.controller.addSocket(socket);	
 	this.player1 = socket.id;
 	this.controller.emitToSocket(socket.id, 'textMessage', {message:'New game, you are 1'});
@@ -163,5 +155,4 @@ PongApplication.prototype.join = function(socket){
 
 };
 
-exports.startApplication = startApplication;
-exports.applicationSocket = null;
+module.exports = onConnection;

@@ -1,0 +1,17 @@
+{
+  "author": "Christian Revillard",
+  "name": "creanvas",
+  "description": "creanvas local unpublishes, manually copied",
+  "version": "0.0.0",
+  "repository": {
+    "url": ""
+  },
+  "main": "./creanvas.js",
+  "keywords": [
+  ],
+    "dependencies": {
+    },
+  "engines": {
+    "node": "*"
+  }
+}

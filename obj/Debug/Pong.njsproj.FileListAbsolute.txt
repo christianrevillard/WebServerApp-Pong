@@ -1,0 +1,2 @@
+C:\Users\Christian\Development\Projects\Apps\Pong\obj\Debug\Pong.njsprojResolveAssemblyReference.cache
+C:\Users\Christian\Development\Projects\Apps\Pong\bin\Microsoft.NodejsTools.WebRole.dll
